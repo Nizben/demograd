@@ -52,10 +52,13 @@ class Tensor:
 
     def __rmul__(self, other):
         return Mul.apply(self, other)
+    
 
     # Representation
     def __repr__(self):
         return f"Tensor(data={self.data}, grad={self.grad})"
+
+    
 
 
 print('done')
