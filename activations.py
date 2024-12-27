@@ -3,6 +3,7 @@ from functions import Function
 from tensor import Tensor
 from utils import broadcast_backward
 
+
 class ReLU(Function):
     @staticmethod
     def apply(a):
@@ -28,7 +29,7 @@ class Sigmoid(Function):
     @staticmethod
     def apply(a):
         a = a if isinstance(a, Tensor) else Tensor(np.array(a))
-        out_data = 1/(1 + np.exp(-a.data))
+        out_data = 1 / (1 + np.exp(-a.data))
         out = Tensor(out_data, requires_grad=a.requires_grad)
         if out.requires_grad:
             sigmoid = Sigmoid()
@@ -59,6 +60,6 @@ class Tanh(Function):
 
     def backward(self, grad_output):
         a = self.inputs[0]
-        grad_a = grad_output * (1 - self.output.data ** 2)
+        grad_a = grad_output * (1 - self.output.data**2)
         grad_a = broadcast_backward(grad_a, a.data.shape)
         return (grad_a,)

@@ -7,6 +7,7 @@ def topological_sort(tensor):
     """
     visited = set()
     sorted_tensors = []
+
     def topological_sort_helper(tensor):
         if tensor in visited:
             return
@@ -15,7 +16,7 @@ def topological_sort(tensor):
             for inp in function.inputs:
                 topological_sort_helper(inp)
             sorted_tensors.append(function)
-    
+
     topological_sort_helper(tensor)
     return sorted_tensors
 
@@ -26,9 +27,9 @@ def broadcast_backward(grad, shape):
     """
     while len(grad.shape) > len(shape):
         grad = grad.sum(axis=0)
-    
+
     for axis, size in enumerate(shape):
         if size == 1:
             grad = grad.sum(axis=axis, keepdims=True)
-    
+
     return grad.reshape(shape)

@@ -1,23 +1,27 @@
 import numpy as np
 from tensor_engine import Tensor
 
+
 class Function:
     @staticmethod
     def apply(*args, **kwargs):
         raise NotImplementedError
+
     def forward(self, *args):
         raise NotImplementedError
+
     def backward(self, grad_output):
         raise NotImplementedError
+
 
 class Add(Function):
     @staticmethod
     def apply(a, b):
         a = a if isinstance(a, Tensor) else Tensor(np.array(a))
         b = b if isinstance(b, Tensor) else Tensor(np.array(b))
-        out = Tensor(a.data + b.data, requires_grad = a.requires_grad or b.requires_grad)
+        out = Tensor(a.data + b.data, requires_grad=a.requires_grad or b.requires_grad)
         if out.requires_grad:
-            add =Add()
+            add = Add()
             add.inputs = [a, b]
             add.output = out
             out.set_grad_fn(add)
@@ -32,13 +36,12 @@ class Add(Function):
         return grad_a, grad_b
 
 
-
 class Sub(Function):
     @staticmethod
     def apply(a, b):
         a = a if isinstance(a, Tensor) else Tensor(np.array(a))
         b = b if isinstance(b, Tensor) else Tensor(np.array(b))
-        out = Tensor(a.data - b.data, requires_grad = a.requires_grad or b.requires_grad)
+        out = Tensor(a.data - b.data, requires_grad=a.requires_grad or b.requires_grad)
         if out.requires_grad:
             sub = Sub()
             sub.inputs = [a, b]
@@ -59,7 +62,7 @@ class Mul(Function):
     def apply(a, b):
         a = a if isinstance(a, Tensor) else Tensor(np.array(a))
         b = b if isinstance(b, Tensor) else Tensor(np.array(b))
-        out = Tensor(a.data * b.data, requires_grad = a.requires_grad or b.requires_grad)
+        out = Tensor(a.data * b.data, requires_grad=a.requires_grad or b.requires_grad)
         if out.requires_grad:
             mul = Mul()
             mul.inputs = [a, b]
