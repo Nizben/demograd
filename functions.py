@@ -1,5 +1,5 @@
 import numpy as np
-from tensor_engine import Tensor
+
 
 
 class Function:
@@ -17,6 +17,7 @@ class Function:
 class Add(Function):
     @staticmethod
     def apply(a, b):
+        from tensor_engine import Tensor
         a = a if isinstance(a, Tensor) else Tensor(np.array(a))
         b = b if isinstance(b, Tensor) else Tensor(np.array(b))
         out = Tensor(a.data + b.data, requires_grad=a.requires_grad or b.requires_grad)
@@ -39,6 +40,7 @@ class Add(Function):
 class Sub(Function):
     @staticmethod
     def apply(a, b):
+        from tensor_engine import Tensor
         a = a if isinstance(a, Tensor) else Tensor(np.array(a))
         b = b if isinstance(b, Tensor) else Tensor(np.array(b))
         out = Tensor(a.data - b.data, requires_grad=a.requires_grad or b.requires_grad)
@@ -60,6 +62,7 @@ class Sub(Function):
 class Mul(Function):
     @staticmethod
     def apply(a, b):
+        from tensor_engine import Tensor
         a = a if isinstance(a, Tensor) else Tensor(np.array(a))
         b = b if isinstance(b, Tensor) else Tensor(np.array(b))
         out = Tensor(a.data * b.data, requires_grad=a.requires_grad or b.requires_grad)
