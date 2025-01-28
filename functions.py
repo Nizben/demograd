@@ -21,6 +21,7 @@ class Add(Function):
         a = a if isinstance(a, Tensor) else Tensor(np.array(a))
         b = b if isinstance(b, Tensor) else Tensor(np.array(b))
         out = Tensor(a.data + b.data, requires_grad=a.requires_grad or b.requires_grad)
+        depends_on = []
         if out.requires_grad:
             add = Add()
             add.inputs = [a, b]
