@@ -10,9 +10,9 @@ class Tensor:
             data = np.array(data, dtype=np.float32)
         self.data = data
         self.grad = None
-        self.requires_grad = requires_grad
+        self.requires_grad = requires_grad  # Whether to compute gradients : boolean
 
-        # List of dependencies (parents in the computational graph)
+        # List of dependencies (parents in the computational graph),  if depends_on is None, then it is an empty list
         self.depends_on = depends_on or []
         # Function that is creating the tensor
         self._grad_fn = None

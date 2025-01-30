@@ -1,5 +1,5 @@
 import numpy as np
-
+from utils import broadcast_backward
 
 
 class Function:
@@ -18,23 +18,24 @@ class Add(Function):
     @staticmethod
     def apply(a, b):
         from tensor_engine import Tensor
+
         a = a if isinstance(a, Tensor) else Tensor(np.array(a))
         b = b if isinstance(b, Tensor) else Tensor(np.array(b))
-        out = Tensor(a.data + b.data, requires_grad=a.requires_grad or b.requires_grad)
-        depends_on = []
+        add = Add()
+        add.inputs = [a, b]
+        out = Tensor(
+            a.data + b.data,
+            requires_grad=a.requires_grad or b.requires_grad,
+            depends_on=[add],
+        )
         if out.requires_grad:
-            add = Add()
-            add.inputs = [a, b]
             add.output = out
             out.set_grad_fn(add)
         return out
 
-    def forward(self, grad_output):
-        grad_a = grad_output
-        grad_b = grad_output
-        # Handle broadcasting
-        grad_a = broadcast_backward(grad_a, self.inputs[0].data.shape)
-        grad_b = broadcast_backward(grad_b, self.inputs[1].data.shape)
+    def backward(self, grad_output):
+        grad_a = broadcast_backward(grad_output, self.inputs[0].data.shape)
+        grad_b = broadcast_backward(grad_output, self.inputs[1].data.shape)
         return grad_a, grad_b
 
 
@@ -42,21 +43,24 @@ class Sub(Function):
     @staticmethod
     def apply(a, b):
         from tensor_engine import Tensor
+
         a = a if isinstance(a, Tensor) else Tensor(np.array(a))
         b = b if isinstance(b, Tensor) else Tensor(np.array(b))
-        out = Tensor(a.data - b.data, requires_grad=a.requires_grad or b.requires_grad)
+        sub = Sub()
+        sub.inputs = [a, b]
+        out = Tensor(
+            a.data - b.data,
+            requires_grad=a.requires_grad or b.requires_grad,
+            depends_on=[sub],
+        )
         if out.requires_grad:
-            sub = Sub()
-            sub.inputs = [a, b]
             sub.output = out
             out.set_grad_fn(sub)
         return out
 
-    def forward(self, grad_output):
-        grad_a = grad_output
-        grad_b = -grad_output
-        grad_a = broadcast_backward(grad_a, self.inputs[0].data.shape)
-        grad_b = broadcast_backward(grad_b, self.inputs[1].data.shape)
+    def backward(self, grad_output):
+        grad_a = broadcast_backward(grad_output, self.inputs[0].data.shape)
+        grad_b = broadcast_backward(-grad_output, self.inputs[1].data.shape)
         return grad_a, grad_b
 
 
@@ -64,19 +68,56 @@ class Mul(Function):
     @staticmethod
     def apply(a, b):
         from tensor_engine import Tensor
+
         a = a if isinstance(a, Tensor) else Tensor(np.array(a))
         b = b if isinstance(b, Tensor) else Tensor(np.array(b))
-        out = Tensor(a.data * b.data, requires_grad=a.requires_grad or b.requires_grad)
+        mul = Mul()
+        mul.inputs = [a, b]
+        out = Tensor(
+            a.data * b.data,
+            requires_grad=a.requires_grad or b.requires_grad,
+            depends_on=[mul],
+        )
         if out.requires_grad:
-            mul = Mul()
-            mul.inputs = [a, b]
             mul.output = out
             out.set_grad_fn(mul)
         return out
 
-    def forward(self, grad_output):
-        grad_a = grad_output * b.data
-        grad_b = grad_output * a.data
-        grad_a = broadcast_backward(grad_a, a.data.shape)
-        grad_b = broadcast_backward(grad_b, b.data.shape)
+    def backward(self, grad_output):
+        grad_a = broadcast_backward(
+            grad_output * self.inputs[1].data, self.inputs[0].data.shape
+        )
+        grad_b = broadcast_backward(
+            grad_output * self.inputs[0].data, self.inputs[1].data.shape
+        )
+        return grad_a, grad_b
+
+
+class Div(Function):
+    @staticmethod
+    def apply(a, b):
+        from tensor_engine import Tensor
+
+        a = a if isinstance(a, Tensor) else Tensor(np.array(a))
+        b = b if isinstance(b, Tensor) else Tensor(np.array(b))
+        div = Div()
+        div.inputs = [a, b]
+        out = Tensor(
+            a.data / b.data,
+            requires_grad=a.requires_grad or b.requires_grad,
+            depends_on=[div],
+        )
+        if out.requires_grad:
+            div.output = out
+            out.set_grad_fn(div)
+        return out
+
+    def backward(self, grad_output):
+        grad_a = broadcast_backward(
+            grad_output / self.inputs[1].data, self.inputs[0].data.shape
+        )
+        grad_b = broadcast_backward(
+            -grad_output * self.inputs[0].data / (self.inputs[1].data ** 2),
+            self.inputs[1].data.shape,
+        )
         return grad_a, grad_b

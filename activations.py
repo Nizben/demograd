@@ -1,6 +1,6 @@
 import numpy as np
 from functions import Function
-from tensor import Tensor
+from tensor_engine import Tensor
 from utils import broadcast_backward
 
 
