@@ -1,0 +1,6 @@
+# Necessary libraries for the core engine
+numpy
+
+# Libraries for tests, visualization, ...
+pytest
+graphviz

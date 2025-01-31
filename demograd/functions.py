@@ -1,6 +1,5 @@
 import numpy as np
-from utils import broadcast_backward
-
+from . import utils
 
 class Function:
     @staticmethod

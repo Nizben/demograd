@@ -1,6 +1,5 @@
 import numpy as np
-from functions import Function
-from utils import topological_sort
+from . import utils
 
 
 # Basic tensor class
