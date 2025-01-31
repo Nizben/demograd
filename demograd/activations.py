@@ -1,8 +1,17 @@
 import numpy as np
-from functions import Function
-from tensor_engine import Tensor
-from utils import broadcast_backward
+from demograd.tensor_engine import Tensor
+from demograd.utils import broadcast_backward
 
+class Function:
+    @staticmethod
+    def apply(*args, **kwargs):
+        raise NotImplementedError
+
+    def forward(self, *args):
+        raise NotImplementedError
+
+    def backward(self, grad_output):
+        raise NotImplementedError
 
 class ReLU(Function):
     @staticmethod

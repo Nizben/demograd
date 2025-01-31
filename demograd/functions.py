@@ -1,5 +1,6 @@
 import numpy as np
 from . import utils
+from demograd.tensor_engine import Tensor
 
 class Function:
     @staticmethod
@@ -16,7 +17,6 @@ class Function:
 class Add(Function):
     @staticmethod
     def apply(a, b):
-        from tensor_engine import Tensor
 
         a = a if isinstance(a, Tensor) else Tensor(np.array(a))
         b = b if isinstance(b, Tensor) else Tensor(np.array(b))
@@ -41,7 +41,6 @@ class Add(Function):
 class Sub(Function):
     @staticmethod
     def apply(a, b):
-        from tensor_engine import Tensor
 
         a = a if isinstance(a, Tensor) else Tensor(np.array(a))
         b = b if isinstance(b, Tensor) else Tensor(np.array(b))
@@ -66,7 +65,6 @@ class Sub(Function):
 class Mul(Function):
     @staticmethod
     def apply(a, b):
-        from tensor_engine import Tensor
 
         a = a if isinstance(a, Tensor) else Tensor(np.array(a))
         b = b if isinstance(b, Tensor) else Tensor(np.array(b))
@@ -95,7 +93,6 @@ class Mul(Function):
 class Div(Function):
     @staticmethod
     def apply(a, b):
-        from tensor_engine import Tensor
 
         a = a if isinstance(a, Tensor) else Tensor(np.array(a))
         b = b if isinstance(b, Tensor) else Tensor(np.array(b))

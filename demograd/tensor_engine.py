@@ -1,6 +1,6 @@
 import numpy as np
 from . import utils
-
+from demograd import functions
 
 # Basic tensor class
 class Tensor:
@@ -47,9 +47,9 @@ class Tensor:
 
     # Overloading operations
     def __add__(self, other):
-        from functions import Add
+        #from functions import Add
 
-        return Add.apply(self, other)
+        return functions.Add.apply(self, other)
 
     def __radd__(self, other):
         from functions import Add
