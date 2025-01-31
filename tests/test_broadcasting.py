@@ -1,6 +1,6 @@
 import numpy as np
-from ..tensor_engine import Tensor
-from functions import Add, Sub, Mul
+from demograd.tensor_engine import Tensor
+from demograd.functions import Add, Sub, Mul
 
 def test_broadcast_add():
     a = Tensor([[1.0, 2.0], [3.0, 4.0]], requires_grad=True)  # Shape (2, 2)
