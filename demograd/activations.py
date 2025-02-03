@@ -1,5 +1,4 @@
 import numpy as np
-from demograd.tensor_engine import Tensor
 from demograd.utils import broadcast_backward
 
 class Function:
@@ -16,6 +15,7 @@ class Function:
 class ReLU(Function):
     @staticmethod
     def apply(a):
+        from demograd.tensor_engine import Tensor
         a = a if isinstance(a, Tensor) else Tensor(np.array(a))
         relu = ReLU()
         relu.inputs = [a]
@@ -36,6 +36,7 @@ class ReLU(Function):
 class Sigmoid(Function):
     @staticmethod
     def apply(a):
+        from demograd.tensor_engine import Tensor
         a = a if isinstance(a, Tensor) else Tensor(np.array(a))
         sigmoid = Sigmoid()
         sigmoid.inputs = [a]
@@ -56,6 +57,7 @@ class Sigmoid(Function):
 class Tanh(Function):
     @staticmethod
     def apply(a):
+        from demograd.tensor_engine import Tensor
         a = a if isinstance(a, Tensor) else Tensor(np.array(a))
         tanh = Tanh()
         tanh.inputs = [a]
@@ -75,6 +77,7 @@ class Tanh(Function):
 class Softmax(Function):
     @staticmethod
     def apply(a):
+        from demograd.tensor_engine import Tensor
         a = a if isinstance(a, Tensor) else Tensor(np.array(a))
         softmax = Softmax()
         softmax.inputs = [a]

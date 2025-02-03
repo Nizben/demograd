@@ -47,36 +47,47 @@ class Tensor:
 
     # Overloading operations
     def __add__(self, other):
-        #from functions import Add
-
         return functions.Add.apply(self, other)
 
     def __radd__(self, other):
-        from functions import Add
-
-        return Add.apply(self, other)
+        return functions.Add.apply(self, other)
 
     def __sub__(self, other):
-        from functions import Sub
-
-        return Sub.apply(self, other)
+        return functions.Sub.apply(self, other)
 
     def __rsub__(self, other):
-        from functions import Sub
-
-        return Sub.apply(other, self)
+        return functions.Sub.apply(other, self)
 
     def __mul__(self, other):
-        from functions import Mul
-
-        return Mul.apply(self, other)
+        return functions.Mul.apply(self, other)
 
     def __rmul__(self, other):
-        return Mul.apply(self, other)
+        return functions.Mul.apply(self, other)
+    
+    def __truediv__(self, other):
+        return functions.Div.apply(self, other)
+    
+    def __rtruediv__(self, other):
+        return functions.Div.apply(other, self)
+    
+    def __neg__(self):
+        return functions.Neg.apply(self)
+    
+    def __pow__(self, other):
+        return functions.Pow.apply(self, other)
+    
+    def __rpow__(self, other):
+        return functions.Pow.apply(other, self)
+
+    def __exp__(self):
+        return functions.Exp.apply(self)
+
+    def __getitem__(self, key):
+        # Slicing operation
+        sliced_data = self.data[key]
+        new_tensor = Tensor(sliced_data, requires_grad=self.requires_grad, depends_on=self.depends_on)
+        return new_tensor
 
     # Representation
     def __repr__(self):
         return f"Tensor(data={self.data}, grad={self.grad})"
-
-
-print("done")
