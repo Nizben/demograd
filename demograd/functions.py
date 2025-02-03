@@ -214,3 +214,29 @@ class Neg(Function):
             -grad_output, self.inputs[0].data.shape
         )
         return grad_a
+
+class MatMul:
+    @staticmethod
+    def apply(a, b):
+        from demograd.tensor_engine import Tensor
+        a = a if isinstance(a, Tensor) else Tensor(np.array(a))
+        b = b if isinstance(b, Tensor) else Tensor(np.array(b))
+        matmul = MatMul()
+        matmul.inputs = [a, b]
+        out_data = np.dot(a.data, b.data)
+        out = Tensor(out_data,
+                     requires_grad=a.requires_grad or b.requires_grad,
+                     depends_on=[matmul]
+                     )
+        if out.requires_grad:
+            matmul.output = out
+            out.set_grad_fn(matmul)
+        return out
+        
+    def backward(self, grad_output):
+        a, b = self.inputs
+        grad_a = np.dot(grad_output, b.data.T)
+        grad_b = np.dot(a.data.T, grad_output)
+        grad_a = broadcast_backward(grad_a, a.data.shape)
+        grad_b = broadcast_backward(grad_b, b.data.shape)
+        return grad_a, grad_b
