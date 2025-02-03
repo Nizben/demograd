@@ -1,6 +1,5 @@
 import numpy as np
 from . import utils
-from demograd.tensor_engine import Tensor
 
 class Function:
     @staticmethod
@@ -17,7 +16,7 @@ class Function:
 class Add(Function):
     @staticmethod
     def apply(a, b):
-
+        from demograd.tensor_engine import Tensor
         a = a if isinstance(a, Tensor) else Tensor(np.array(a))
         b = b if isinstance(b, Tensor) else Tensor(np.array(b))
         add = Add()
@@ -33,15 +32,15 @@ class Add(Function):
         return out
 
     def backward(self, grad_output):
-        grad_a = broadcast_backward(grad_output, self.inputs[0].data.shape)
-        grad_b = broadcast_backward(grad_output, self.inputs[1].data.shape)
+        grad_a = utils.broadcast_backward(grad_output, self.inputs[0].data.shape)
+        grad_b = utils.broadcast_backward(grad_output, self.inputs[1].data.shape)
         return grad_a, grad_b
 
 
 class Sub(Function):
     @staticmethod
     def apply(a, b):
-
+        from demograd.tensor_engine import Tensor
         a = a if isinstance(a, Tensor) else Tensor(np.array(a))
         b = b if isinstance(b, Tensor) else Tensor(np.array(b))
         sub = Sub()
@@ -65,7 +64,7 @@ class Sub(Function):
 class Mul(Function):
     @staticmethod
     def apply(a, b):
-
+        from demograd.tensor_engine import Tensor
         a = a if isinstance(a, Tensor) else Tensor(np.array(a))
         b = b if isinstance(b, Tensor) else Tensor(np.array(b))
         mul = Mul()
@@ -93,7 +92,7 @@ class Mul(Function):
 class Div(Function):
     @staticmethod
     def apply(a, b):
-
+        from demograd.tensor_engine import Tensor
         a = a if isinstance(a, Tensor) else Tensor(np.array(a))
         b = b if isinstance(b, Tensor) else Tensor(np.array(b))
         div = Div()

@@ -34,7 +34,7 @@ class Tensor:
         self.grad = grad
 
         # Perform topological sort to order the functions
-        topo_order = topological_sort(self)
+        topo_order = utils.topological_sort(self)
 
         for function in reversed(topo_order):
             grads = function.backward(function.output.grad)
