@@ -240,3 +240,34 @@ class MatMul:
         grad_a = broadcast_backward(grad_a, a.data.shape)
         grad_b = broadcast_backward(grad_b, b.data.shape)
         return grad_a, grad_b
+    
+class Sum(Function):
+    @staticmethod
+    def apply(t):
+        from demograd.tensor_engine import Tensor
+        sum_instance = Sum()
+        sum_instance.inputs = [t]
+        # Compute the sum of all elements in t.data
+        sum_data = np.sum(t.data)
+        out = Tensor(np.array(sum_data), requires_grad=t.requires_grad, depends_on=[sum_instance])
+        if out.requires_grad:
+            sum_instance.output = out
+            out.set_grad_fn(sum_instance)
+        return out
+
+    def backward(self, grad_output):
+        # The gradient of a sum operation is a tensor of ones (with the shape of the input) times the incoming gradient.
+        t = self.inputs[0]
+        grad = np.ones_like(t.data) * grad_output
+        return (grad,)
+
+class Mean(Function):
+    @staticmethod
+    def apply(t):
+        from demograd.tensor_engine import Tensor
+        # Use Sum to compute the total, then divide by the number of elements.
+        sum_tensor = Sum.apply(t)
+        num_elements = t.data.size
+        # Use the Div operation already defined in functions.py for differentiability.
+        return Div.apply(sum_tensor, Tensor(np.array(num_elements, dtype=np.float32)))
+    
