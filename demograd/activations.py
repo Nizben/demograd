@@ -1,6 +1,7 @@
 import numpy as np
 from demograd.utils import broadcast_backward
 
+
 class Function:
     @staticmethod
     def apply(*args, **kwargs):
@@ -12,10 +13,12 @@ class Function:
     def backward(self, grad_output):
         raise NotImplementedError
 
+
 class ReLU(Function):
     @staticmethod
     def apply(a):
         from demograd.tensor_engine import Tensor
+
         a = a if isinstance(a, Tensor) else Tensor(np.array(a))
         relu = ReLU()
         relu.inputs = [a]
@@ -33,10 +36,12 @@ class ReLU(Function):
         grad_a = broadcast_backward(grad_a, a.data.shape)
         return (grad_a,)
 
+
 class Sigmoid(Function):
     @staticmethod
     def apply(a):
         from demograd.tensor_engine import Tensor
+
         a = a if isinstance(a, Tensor) else Tensor(np.array(a))
         sigmoid = Sigmoid()
         sigmoid.inputs = [a]
@@ -58,6 +63,7 @@ class Tanh(Function):
     @staticmethod
     def apply(a):
         from demograd.tensor_engine import Tensor
+
         a = a if isinstance(a, Tensor) else Tensor(np.array(a))
         tanh = Tanh()
         tanh.inputs = [a]
@@ -70,14 +76,16 @@ class Tanh(Function):
 
     def backward(self, grad_output):
         a = self.inputs[0]
-        grad_a = grad_output * (1 - self.output.data ** 2)
+        grad_a = grad_output * (1 - self.output.data**2)
         grad_a = broadcast_backward(grad_a, a.data.shape)
         return (grad_a,)
+
 
 class Softmax(Function):
     @staticmethod
     def apply(a):
         from demograd.tensor_engine import Tensor
+
         a = a if isinstance(a, Tensor) else Tensor(np.array(a))
         softmax = Softmax()
         softmax.inputs = [a]
@@ -93,4 +101,3 @@ class Softmax(Function):
         grad_a = grad_output * self.output.data * (1 - self.output.data)
         grad_a = broadcast_backward(grad_a, a.data.shape)
         return (grad_a,)
-

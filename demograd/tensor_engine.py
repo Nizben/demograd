@@ -2,6 +2,7 @@ import numpy as np
 from . import utils
 from demograd import functions
 
+
 # Basic tensor class
 class Tensor:
     def __init__(self, data, requires_grad=False, depends_on=None, name=None):
@@ -63,19 +64,19 @@ class Tensor:
 
     def __rmul__(self, other):
         return functions.Mul.apply(self, other)
-    
+
     def __truediv__(self, other):
         return functions.Div.apply(self, other)
-    
+
     def __rtruediv__(self, other):
         return functions.Div.apply(other, self)
-    
+
     def __neg__(self):
         return functions.Neg.apply(self)
-    
+
     def __pow__(self, other):
         return functions.Pow.apply(self, other)
-    
+
     def __rpow__(self, other):
         return functions.Pow.apply(other, self)
 
@@ -85,7 +86,9 @@ class Tensor:
     def __getitem__(self, key):
         # Slicing operation
         sliced_data = self.data[key]
-        new_tensor = Tensor(sliced_data, requires_grad=self.requires_grad, depends_on=self.depends_on)
+        new_tensor = Tensor(
+            sliced_data, requires_grad=self.requires_grad, depends_on=self.depends_on
+        )
         return new_tensor
 
     # Representation

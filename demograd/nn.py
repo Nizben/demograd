@@ -2,10 +2,15 @@ import numpy as np
 from demograd.tensor_engine import Tensor
 from demograd.functions import MatMul
 
+
 class Linear:
     def __init__(self, in_features, out_features, bias=True):
         # Initialize weights and bias
-        self.W = Tensor(np.random.randn(in_features, out_features) * 0.01, requires_grad=True, name="W")
+        self.W = Tensor(
+            np.random.randn(in_features, out_features) * 0.01,
+            requires_grad=True,
+            name="W",
+        )
         if bias:
             self.b = Tensor(np.zeros((1, out_features)), requires_grad=True, name="b")
         else:
@@ -21,8 +26,7 @@ class Linear:
         return out
 
     def __call__(self, x):
-        return self.forward(x)    
-
+        return self.forward(x)
 
 
 class Sequential:

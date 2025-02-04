@@ -1,6 +1,7 @@
 from demograd.tensor_engine import Tensor
 from demograd.functions import Mean
 
+
 class MSELoss:
     def __call__(self, prediction, target):
         # Ensure target is a Tensor.

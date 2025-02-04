@@ -2,6 +2,7 @@ import numpy as np
 from demograd.tensor_engine import Tensor
 from demograd.functions import Function
 
+
 class TensorMax(Function):
     @staticmethod
     def forward(ctx, tensor, axis, keepdims=True):
@@ -14,6 +15,7 @@ class TensorMax(Function):
         tensor, axis, keepdims = ctx.saved_tensors
         mask = tensor.data == np.max(tensor.data, axis=axis, keepdims=keepdims)
         return Tensor(mask * grad_output.data)
+
 
 class TensorSum(Function):
     @staticmethod
@@ -31,8 +33,10 @@ class TensorSum(Function):
         grad_expanded = np.broadcast_to(grad_output.data, output_shape)
         return Tensor(grad_expanded)
 
+
 def tensor_max(tensor, axis, keepdims=True):
     return TensorMax.apply(tensor, axis, keepdims)
+
 
 def tensor_sum(tensor, axis, keepdims=True):
     return TensorSum.apply(tensor, axis, keepdims)
