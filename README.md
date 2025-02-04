@@ -3,7 +3,8 @@
 **Demograd** is a minimal autograd engine and neural network library built for educational purposes. It is designed to mimic the core functionalities of PyTorch, including a tensor class with automatic differentiation, a set of basic differentiable operations, activation functions, neural network layers, and optimizers. The design emphasizes clarity, modularity, and reproducibility.
 
 > **Note:** This repository is still a work in progress!
-> **Note:** This automatic differentiation engine is also heavily inspired by Karpathy's [Micrograd] (https://github.com/karpathy/micrograd).
+
+> **Note:** This automatic differentiation engine is also heavily inspired by Karpathy's [Micrograd](https://github.com/karpathy/micrograd).
 
 ## Overview
 
