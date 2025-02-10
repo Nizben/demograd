@@ -51,4 +51,4 @@ model = Sequential(
 ```
 
 ## License
-This project is provided for educational purposes. Use it freely to learn about autograd engines and neural network training.
+MIT License - This project is provided for educational purposes. Feel free to use and modify as needed.
